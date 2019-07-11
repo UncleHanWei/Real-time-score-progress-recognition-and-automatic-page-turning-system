@@ -1,5 +1,6 @@
 import pyaudio
 import numpy as np
+from audioop import rms
 
 CHUNK = 4096
 RATE = 44100
@@ -38,6 +39,8 @@ while True :
     # 把音訊串流存進 data
     # stream read 一次會讀 CHUNK 個資料
     data = stream.read(CHUNK)
+    print(rms(data, 2))
+
     # 把 data 轉成 np array
     # 由於 data 裡的資料型態是 bytes, 算是字串, 所以用 fromstring
     data = np.fromstring(data, dtype=np.int16) * window
@@ -51,6 +54,9 @@ while True :
     # db=np.average(np.abs(data))*2
     # bars="#"*int(50*db/2**16)
     # print("%05f %s"%(db,bars))
+    # db = 20*np.log10(np.sqrt(np.mean(np.absolute(data)**2)))
+    # print(db)
+    # print(audioop.rms(data, 2))
 
     # use quadratic interpolation around the max
     if which != len(fftData) - 1:
