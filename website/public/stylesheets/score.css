@@ -1,0 +1,29 @@
+.col-sm-3 {
+    position: relative;
+    right: -70;
+}
+
+button {
+    margin: 10px;
+}
+
+.song {
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+.component {
+    margin: 3%;
+}
+
+label {
+    width: 400px;
+}
+
+img {
+    width: 800px;
+    height: 500px;
+}
+
+.row {
+    margin: 3%
+}
