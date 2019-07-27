@@ -19,7 +19,7 @@ h4{
     margin-right: auto; 
 }
 #t1{
-    background-image: url("1.jpg");
+    background-image: url("../images/1.jpg");
     background-repeat:no-repeat;
     background-position:0px -15px;
     width:160px;
@@ -28,7 +28,7 @@ h4{
     margin-right: 3%
 }
 #t2{
-    background-image: url("2.jpg");
+    background-image: url("../images/2.jpg");
     background-position:-25px -15px;
     width:160px;
     height:130px;
@@ -36,7 +36,7 @@ h4{
     margin-right: 3%
 }
 #t3{
-    background-image: url("3.jpg");
+    background-image: url("../images/3.jpg");
     background-repeat:no-repeat;
     background-position:-29px -49px;
     width:160px;
@@ -45,7 +45,7 @@ h4{
     margin-right: 3%
 }
 #t4{
-    background-image: url("4.jpg");
+    background-image: url("../images/4.jpg");
     background-repeat:no-repeat;
     background-position:-15px -15px;
     width:160px;
@@ -54,7 +54,7 @@ h4{
     margin-right: 3%
 }
 #t5{
-    background-image: url("5.png");
+    background-image: url("../images/5.png");
     background-repeat:no-repeat;
     background-position:-35px -45px;
     width:160px;
