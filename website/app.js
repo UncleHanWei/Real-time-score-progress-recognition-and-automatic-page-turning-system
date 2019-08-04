@@ -3,17 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var MongoClient = require('mongodb').MongoClient;
-
-// Connect to the db
-MongoClient.connect("mongodb://localhost:27017/mymondb", { useNewUrlParser: true }, function (err, db) {
-  if(err) throw err;
-  //Write databse Insert/Update/Query code here..
-  console.log('mongodb is running!');
-  // db.close(); //關閉連線
-});
 
 var indexRouter = require('./routes/index');
+var searchDB = require('./routes/searchDB');
 
 var app = express();
 
@@ -29,6 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // 網址列的變化
 app.use('/', indexRouter);
+app.use('/searchDB', searchDB);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
