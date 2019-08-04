@@ -39,6 +39,12 @@ while True :
     # 把音訊串流存進 data
     # stream read 一次會讀 CHUNK 個資料
     data = stream.read(CHUNK)
+
+    # 先用 rms 計算輸入的聲音的功率
+    # 大約 2500 以上才是剛彈吉他的音量，其餘的是延音
+    # 因此若是功率低於 2500 則直接跳過
+    if rms(data, 2) < 900 :
+        continue
     print(rms(data, 2))
 
     # 把 data 轉成 np array
@@ -50,13 +56,6 @@ while True :
     # find the maximum
     which = fftData[1:].argmax() + 1
 
-    # 檢測聲音的分貝
-    # db=np.average(np.abs(data))*2
-    # bars="#"*int(50*db/2**16)
-    # print("%05f %s"%(db,bars))
-    # db = 20*np.log10(np.sqrt(np.mean(np.absolute(data)**2)))
-    # print(db)
-    # print(audioop.rms(data, 2))
 
     # use quadratic interpolation around the max
     if which != len(fftData) - 1:
