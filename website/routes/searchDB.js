@@ -77,7 +77,7 @@ var scoreModel = mongoose.model('scoreDB', scoreSchema);
 
 var preLoadScoreInfo;
 // 預先載入資料庫中樂譜的基本資訊(id 和 tags) 用以搜尋
-scoreModel.find({}, { tags: 1, id: 1, name : 1 }, function (err, docs) {
+scoreModel.find({}, { tags: 1, name: 1 }, function (err, docs) {
   if (err) console.log(err);
   console.log(docs);
   preLoadScoreInfo = docs;
@@ -109,20 +109,24 @@ router.post('/search_result', function (req, res, next) {
   console.log(findResult);
   console.log("Count of result ==> ", count);
 
-  // let findResult;
-  // 往資料庫裡撈資料
-  // 之後作針對 tags 的模糊查詢
-  // 回傳的結果要是 歌名 還有 id 
-  // 在前端呈現
-  // scoreModel.find({ name: formData }, { tags: 1, name: 1 }, function (err, docs) {
-  //   if (err) console.log(err);
-  //   console.log('查詢結果：', docs[0]);
-  //   // 把搜尋出來的資料作整理
-  //   findResult = docs[0].name;
-  //   console.log('This is finding result: ', findResult);
-  //   res.render('search_result', { title: '搜尋結果', result: findResult });
-  // });
-
   res.render('search_result', { title: '搜尋結果', result: findResult });
 });
+
+// 接 我要更多資訊 的 request
+router.post('/score', function (req, res, next) {
+  
+  let formData = req.body['scoreId'];
+  console.log("這是新的 formData", formData);
+  
+  let score;
+  scoreModel.find({ _id: formData }, { _id: 0 }, function (err, docs) {
+    if (err) console.log(err);
+    console.log('查詢結果：', docs);
+    // 把搜尋出來的資料作整理
+    score = docs[0];
+    console.log(score.name);
+    res.render('score', { title: score.name });
+  });
+});
+
 module.exports = router;
