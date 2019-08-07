@@ -23,32 +23,33 @@ var scoreSchema = new Schema({
   tags: [],
   name: String,
   author: String,
+  key: String,
+  capo: String,
+  play: String,
   intro: String,
   verse: {
     A: {
       lyric: String,
       chord: String
-    },
-    B: {
+    }
+  },
+  pre: {
+    A: {
       lyric: String,
       chord: String
     }
   },
-  pre: String,
   chorus: {
     A: {
-      lyric: String,
-      chord: String
-    },
-    B: {
       lyric: String,
       chord: String
     }
   },
   inter: {
-    A: String,
-    B: String,
-    C: String
+    A: {
+      lyric: String,
+      chord: String
+    }
   },
   bridge: {
     lyric: String,
@@ -60,24 +61,15 @@ var scoreSchema = new Schema({
   },
   outro: String,
   progress: String
-});
+}, { strict: false });
 var scoreModel = mongoose.model('scoreDB', scoreSchema);
 
 
-// var doc = ({
-//   tags: '林俊傑',
-//   name: '修煉愛情'
-// });
 
-// // 新增資料到資料庫
-// scoreModel.create(doc, function (err, docs) {
-//   if (err) console.log(err);
-//   console.log('儲存成功：', docs);
-// });
 
 var preLoadScoreInfo;
 // 預先載入資料庫中樂譜的基本資訊(id 和 tags) 用以搜尋
-scoreModel.find({}, { tags: 1, name: 1 }, function (err, docs) {
+scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
   if (err) console.log(err);
   console.log(docs);
   preLoadScoreInfo = docs;
@@ -114,10 +106,10 @@ router.post('/search_result', function (req, res, next) {
 
 // 接 我要更多資訊 的 request
 router.post('/score', function (req, res, next) {
-  
+
   let formData = req.body['scoreId'];
   console.log("這是新的 formData", formData);
-  
+
   let score;
   scoreModel.find({ _id: formData }, { _id: 0 }, function (err, docs) {
     if (err) console.log(err);
@@ -125,7 +117,34 @@ router.post('/score', function (req, res, next) {
     // 把搜尋出來的資料作整理
     score = docs[0];
     console.log(score.name);
-    res.render('score', { title: score.name });
+    res.render('score', { title: score.author + ' - ' + score.name, score: score });
+  });
+});
+
+router.post('/InsertScore', function (req, res, next) {
+  let formData = JSON.parse(req.body['score']);
+  // console.log('=============>',(formData));
+  console.log('=============>', typeof (formData));
+  // var doc = ({
+  //   "tags": '林俊傑',
+  //   "name": '修煉愛情'
+  // });
+
+  // 新增資料到資料庫
+  scoreModel.create(formData, function (err, docs) {
+    if (err) {
+      console.log(err);
+      res.render('InsertScore', { title: '新增樂譜', msg: 'alert("新增失敗")' });
+    } else {
+      console.log('儲存成功：', docs);
+      // 刷新預載的資料
+      scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
+        if (err) console.log(err);
+        console.log(docs);
+        preLoadScoreInfo = docs;
+      });
+      res.render('InsertScore', { title: '新增樂譜', msg: 'alert("新增成功")' });
+    }
   });
 });
 
