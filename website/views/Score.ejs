@@ -7,87 +7,37 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title><%= title %></title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
-    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap" rel="stylesheet">
-  <link rel=stylesheet type="text/css" href="../stylesheets/score.css">
+  <link rel=stylesheet type="text/css" href="/stylesheets/score.css">
 
 </head>
 
 <body>
   <% include ./navHeader.ejs %>
-  <div class="row">
-    <div class="col-8">
-      <h2 class='song'>歌名: 怎麼了(周興哲)</h2>
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-outline-info my-2 my-sm-" id='label'>
-          <input type="radio" name="options" id="option1" autocomplete="off" checked> 即時模式
-        </label>
-        <label class="btn btn-outline-info my-2 my-sm-" id='label'>
-          <input type="radio" name="options" id="option2" autocomplete="off"> 普通模式
-        </label>
-      </div>
-      <div>
-        <img
-          src='https://gss2.bdstatic.com/-fo3dSag_xI4khGkpoWK1HF6hhy/baike/s%3D220/sign=e62a94863b7adab439d01c41bbd5b36b/21a4462309f790528611609001f3d7ca7bcbd515.jpg'>
+  <div class="container">
+    <div class="row mb-0" id="infoBar">
+      <div class="col-md-12">
+        <h2><%= title %></h2>
       </div>
     </div>
-    <div class="col-4">
-      <div class="embed-responsive embed-responsive-16by9">
-        <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-          allowfullscreen></iframe>
+    <div class="row mt-1">
+      <div class="col-md-8 bg-dark text-light" id="scoreDiv">
+      </div>
+      
+      <div class="col-md-4">
+        <iframe src="https://www.youtube.com/embed/WO2UNuPOe5g" frameborder="0"></iframe>
       </div>
     </div>
-    <div class="col-6">
-      <audio controls autoplay></audio>
-      <input onclick="startRecording()" type="button" value="錄音" />
-      <input onclick="stopRecording()" type="button" value="停止" />
-      <input onclick="playRecording()" type="button" value="播放" />
-      <input onclick="uploadAudio()" type="button" value="提交" />
-    </div>
-
-    <script type="text/javascript" src="../javascripts/HZRecorder.js"></script>
-
-    <script>
-      var recorder;
-      var audio = document.querySelector('audio');
-
-      function startRecording() {
-        HZRecorder.get(function (rec) {
-          recorder = rec;
-          recorder.start();
-        });
-      }
-
-      function stopRecording() {
-        recorder.stop();
-      }
-
-      function playRecording() {
-        recorder.play(audio);
-      }
-
-      function uploadAudio() {
-        recorder.upload("Handler1.ashx", function (state, e) {
-          switch (state) {
-            case 'uploading':
-              //var percentComplete = Math.round(e.loaded * 100 / e.total) + '%';
-              break;
-            case 'ok':
-              //alert(e.target.responseText);
-              alert("上傳成功");
-              break;
-            case 'error':
-              alert("上傳失败");
-              break;
-            case 'cancel':
-              alert("上傳被取消");
-              break;
-          }
-        });
-      }
-    </script>
   </div>
+  <!-- 引入 bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="/javascripts/score.js"></script>
+  <script>
+    _init(<%- JSON.stringify(score) %>);
+  </script>
 </body>
 
 </html>
