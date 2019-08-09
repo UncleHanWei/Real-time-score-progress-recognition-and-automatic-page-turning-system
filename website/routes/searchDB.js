@@ -26,41 +26,41 @@ var scoreSchema = new Schema({
   key: String,
   capo: String,
   play: String,
-  intro: String,
+  intro: [],
   verse: {
     A: {
-      lyric: String,
-      chord: String
+      lyric: [],
+      chord: []
     }
   },
   pre: {
     A: {
-      lyric: String,
-      chord: String
+      lyric: [],
+      chord: []
     }
   },
   chorus: {
     A: {
-      lyric: String,
-      chord: String
+      lyric: [],
+      chord: []
     }
   },
   inter: {
     A: {
-      lyric: String,
-      chord: String
+      lyric: [],
+      chord: []
     }
   },
   bridge: {
-    lyric: String,
-    chord: String
+    lyric: [],
+    chord: []
   },
   ending: {
-    lyric: String,
-    chord: String
+    lyric: [],
+    chord: []
   },
-  outro: String,
-  progress: String
+  outro: [],
+  progress: []
 }, { strict: false });
 var scoreModel = mongoose.model('scoreDB', scoreSchema);
 
@@ -75,8 +75,7 @@ scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
   preLoadScoreInfo = docs;
 });
 
-
-
+// 搜尋樂曲
 router.post('/search_result', function (req, res, next) {
   console.log('This is preLoadScoreInfo====================>', preLoadScoreInfo);
 
@@ -100,8 +99,16 @@ router.post('/search_result', function (req, res, next) {
   }
   console.log(findResult);
   console.log("Count of result ==> ", count);
-
-  res.render('search_result', { title: '搜尋結果', result: findResult });
+  if (count == 0) {
+    let msg = `
+    <div class="row m-5">
+      <div class="col-md-12">
+        <h4 id="msg" class="text-center"><a class="text-dark" href="/">查無結果，點此返回首頁</a></h4>
+      </div>
+    </div>`
+    res.render('search_result', { title: '搜尋結果', result: '', noResult: msg });
+  }
+  res.render('search_result', { title: '搜尋結果', result: findResult, noResult: '' });
 });
 
 // 接 我要更多資訊 的 request
