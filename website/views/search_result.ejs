@@ -8,11 +8,16 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <title><%= title %></title>
+  <style>
+    #msg {
+      font-family: '微軟正黑體'
+    }
+  </style>
 </head>
 
 <body>
   <% include ./navHeader.ejs %>
-
+  <%- noResult %>
   <div class="container pt-2">
     <form id="resultList" action="/searchDB/score" method="post">
       <input id="toGetScore" type="text" class="d-none" name="scoreId">
