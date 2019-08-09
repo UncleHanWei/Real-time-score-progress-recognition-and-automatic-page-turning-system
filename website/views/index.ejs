@@ -62,72 +62,30 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-  <div style="text-align: center">
-    <a href="/score">TO SCORE</a><br>
-    <a href="/testScore">TO TEST SCORE</a><br>
-    <a href="/chordDetecter">TO Chord Detecter</a>
-  </div>
-
-  <div class="mt-5">
-    <h4>音樂頭條</h4>
-  </div>
-  <div class="album py-5 bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-                allowfullscreen></iframe>
-            </div>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/zpOULjyy-n8?rel=0"
-                allowfullscreen></iframe>
-            </div>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="embed-responsive embed-responsive-16by9">
-              <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/FjHGZj2IjBk"
-                allowfullscreen></iframe>
-            </div>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
-                content. This content is a little bit longer.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="month">
-        <button type="button" class="prev">&#10094;</button>
-        <button type="button" class="next">&#10095;</button>
-      </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-2">
+      <a href="/InsertScore">TO INSERT SCORE</a><br>
+    </div>
+    <div class="col-md-2">
+      <a href="/chordDetecter">TO Chord Detecter</a><br>
+    </div>
+    <div class="col-md-2">
+      <a href="/pitchDetecter">TO Pitch Detecter</a>
     </div>
   </div>
 
   <div class="col-xs-12 col-sm-6 col-md-8">
-    <h4>曲風</h4>
+    <h4>分類</h4>
   </div>
   <div class="row" id="musicrow">
     <div class="col-sm-12 text-center">
-      <button type="button" class="btn btn-outline-primary" id="t1">西洋</button>
-      <button type="button" class="btn btn-outline-secondary" id="t2">華語</button>
-      <button type="button" class="btn btn-outline-success" id="t3">日語</button>
-      <button type="button" class="btn btn-outline-danger" id="t4">韓語</button>
-      <button type="button" class="btn btn-outline-warning" id="t5">粵語</button>
+      <form action="/searchDB/search_result" method="post" id="category">
+        <input type="text" class="d-none" name="search" id="input">
+        <input type="button" class="btn btn-outline-primary" value="華語" onclick="goSearch(value)">
+        <input type="button" class="btn btn-outline-primary" value="英文" onclick="goSearch(value)">
+        <input type="button" class="btn btn-outline-primary" value="搖滾" onclick="goSearch(value)">
+      </form>
     </div>
   </div>
 
@@ -152,6 +110,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+    <script src="/javascripts/index.js"></script>
 </body>
 
 </html>
