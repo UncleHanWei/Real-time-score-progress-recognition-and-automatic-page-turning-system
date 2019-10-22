@@ -15,7 +15,7 @@ var paraIndex = 0;
 var finishParagraph = new Event('finishParagraph');
 
 function userProgress() { // 用來標色顯示使用者彈到的和弦
-  console.log(soundData);
+  console.log('now index',paraIndex);
 
   // 使用的參數是全域的 paragraph, 即是當前頁面上所顯示的樂譜段落
   // 使用全域的變數 paraIndex 來控制標色的進度
@@ -24,14 +24,14 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
     console.log('isArray');
     // 每個和弦跟 全域的 soundData 做比對
     // if 和弦 in soundData 
-    if (soundData.includes(paragraph[paraIndex][0])) {
+    if (soundData.includes(paragraph[paraIndex][0].charAt(0))) {
       // 標色
       $('#' + paraIndex).addClass('played');
       paraIndex += 1
     }
   } else {
     console.log('not Array');
-    if (soundData.includes(paragraph[paraIndex])) {
+    if (soundData.includes(paragraph[paraIndex].charAt(0))) {
       // 標色
       $('#' + paraIndex).addClass('played');
       paraIndex += 1
@@ -61,6 +61,9 @@ async function writeScore() {
     paragraph = g_allContent[i];
     for (let bar = 0; bar < g_allContent[i].length; bar++) {
       if (bar != 0 && bar % 8 == 0) { // 小節數超過 8
+        paragraph = g_allContent[i];
+        paraIndex = 8;
+        soundData.length = 0;
         // Promise 裡面綁定一個事件，用這裡面的事件觸發 resolve(?
         // 綁定的事件是 "userProgress 完成一次段落"
         await new Promise(async (rs, rj) => {
