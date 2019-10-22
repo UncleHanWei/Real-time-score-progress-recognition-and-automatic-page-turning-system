@@ -27,3 +27,7 @@ img {
 .row {
     margin: 3%
 }
+
+.played {
+    color: red;
+}
