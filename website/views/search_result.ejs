@@ -19,7 +19,7 @@
   <% include ./navHeader.ejs %>
   <%- noResult %>
   <div class="container pt-2">
-    <form id="resultList" action="/searchDB/score" method="post">
+    <form id="resultList" action="/searchDB/score" method="GET">
       <input id="toGetScore" type="text" class="d-none" name="scoreId">
     </form>
   </div>

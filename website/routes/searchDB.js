@@ -76,10 +76,10 @@ scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
 });
 
 // 搜尋樂曲
-router.post('/search_result', function (req, res, next) {
+router.get('/search_result', function (req, res, next) {
   console.log('This is preLoadScoreInfo====================>', preLoadScoreInfo);
-
-  let formData = req.body['search'];
+  console.log(req.query);
+  let formData = req.query['search'];
   console.log('formData:===================', formData);
 
   // 用 formData 對 preLoad 做搜尋
@@ -112,9 +112,9 @@ router.post('/search_result', function (req, res, next) {
 });
 
 // 接 我要更多資訊 的 request
-router.post('/score', function (req, res, next) {
+router.get('/score', function (req, res, next) {
 
-  let formData = req.body['scoreId'];
+  let formData = req.query['scoreId'];
   console.log("這是新的 formData", formData);
 
   let score;
