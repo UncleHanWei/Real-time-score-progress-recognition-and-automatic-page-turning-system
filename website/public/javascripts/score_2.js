@@ -189,12 +189,15 @@ function getSoundData() {
     var note = noteFromPitch(freq);
     if (soundData.length < 10) {
       // soundData.push(note) till length == 10
-      soundData.push(noteStrings[note % 12]);
+      // 減掉 capo 的數字來處理調性問題
+      let capo = parseInt(g_score.capo);
+      console.log(capo);
+      soundData.push(noteStrings[(note - capo) % 12]);
     } else { // else length == 10
       // 觸發事件
       // 觸發後要做的事 => userProgress
       window.dispatchEvent(gotEnoughSound);
-      // console.log(soundData);
+      console.log(soundData);
       // 洗掉陣列裡的內容
       soundData.length = 0;
     }
@@ -232,7 +235,8 @@ function myGetUserMedia() {
 
 function startLive() {
   if (audioContext == null) {
-    audioContext = new AudioContext();
+    // audioContext = new AudioContext();
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
     // 需要取得使用者的麥克風進行音訊串流
     // getUserMedia 之後似乎會 return 一個 stream
     // 呼叫 getUserMedia 的函數, callback 到 getStream 函數
@@ -279,7 +283,9 @@ function _init(score) {
   // 並把 START button 加上 onclick
   $('#startBtn').on('click', function () {
     // onclick 裡面呼叫 startLive
+    // 啟動音訊串流
     startLive();
+    // 寫譜
     writeScore()
   });
 }
