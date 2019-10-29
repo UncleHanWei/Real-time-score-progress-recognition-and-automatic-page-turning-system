@@ -277,6 +277,7 @@ function _init(score) {
   $('#infoBar').append('<div class="col-md-1"> Key: ' + score.key + '</div>');
   $('#infoBar').append('<div class="col-md-1"> Play: ' + score.play + '</div>');
   $('#infoBar').append('<div class="col-md-1"><button id="startBtn" class="btn btn-primary">START</div</div>');
+  $('#u2Video').attr('src', 'https://www.youtube.com/embed/' + score.youtube);
   // 存入全域的 score 跟 allContent
   g_score = score;
   g_allContent = dataPreProcess(score);
