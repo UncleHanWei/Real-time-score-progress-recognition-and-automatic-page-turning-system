@@ -1,3 +1,5 @@
+// 用 bpm 來計算，當標色完一個和弦的時候， await 3 拍或 1 拍(取決於一個小節內的和弦數量)
+
 // 可能是處裡不同瀏覽器的支援狀況
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 // 宣告全域的變數
@@ -12,6 +14,10 @@ var g_allContent;
 var soundData = Array();
 var paragraph;
 var paraIndex = 0;
+
+var sleep = (ms = 0) => {
+  return new Promise(r => setTimeout(r, ms));
+}
 
 var finishParagraph = new Event('finishParagraph');
 
@@ -63,9 +69,7 @@ async function writeScore() {
     paragraph = g_allContent[i];
     for (let bar = 0; bar < g_allContent[i].length; bar++) {
       if (bar != 0 && bar % 8 == 0) { // 小節數超過 8
-        paragraph = g_allContent[i];
-        paraIndex = 8;
-        soundData.length = 0;
+
         // Promise 裡面綁定一個事件，用這裡面的事件觸發 resolve(?
         // 綁定的事件是 "userProgress 完成一次段落"
         await new Promise(async (rs, rj) => {
@@ -74,6 +78,9 @@ async function writeScore() {
           });
         });
         // await sleep(1000);
+        paragraph = g_allContent[i];
+        paraIndex = 8;
+        soundData.length = 0;
         scoreDiv.html('');
         scoreDiv.append('<h4>' + g_score.progress[i] + '</h4>');
       }
@@ -97,6 +104,7 @@ async function writeScore() {
     await sleep(1000);
     scoreDiv.html('');
   }
+  stop();
 }
 
 var rafID = null;
@@ -264,6 +272,19 @@ function dataPreProcess(score) {
   return allContent;
 }
 
+function stop() {
+  mediaStreamSource.disconnect();
+  tracks.forEach(function (track) {
+    console.log('Stream Stopped');
+    track.stop();
+  });
+  isStart = false;
+  audioContext = null;
+  paraIndex = 0;
+  window.cancelAnimationFrame(rafID);
+  $('#scoreDiv').html('');
+}
+
 // 建立 init 函數
 function _init(score) {
   // 用來印出樂譜的幾個基本資料
@@ -290,15 +311,6 @@ function _init(score) {
     }
   });
   $('#stopBtn').on('click', function () {
-    mediaStreamSource.disconnect();
-    tracks.forEach(function (track) {
-      console.log('Stream Stopped');
-      track.stop();
-    });
-    isStart = false;
-    audioContext = null;
-    paraIndex = 0;
-    window.cancelAnimationFrame(rafID);
-    $('#scoreDiv').html('');
+    stop();
   })
 }
