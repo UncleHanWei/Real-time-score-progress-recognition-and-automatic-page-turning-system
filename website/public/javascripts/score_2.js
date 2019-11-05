@@ -4,7 +4,8 @@ window.AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext = null; // 用來建立音訊事件的物件
 var analyser = null; // 之後要用來取得 分析音頻 的方法
 var mediaStreamSource = null; // 用來取得音訊串流
-var isConnect = false;
+var tracks = null;
+var isStart = false;
 
 var g_score;
 var g_allContent;
@@ -15,7 +16,7 @@ var paraIndex = 0;
 var finishParagraph = new Event('finishParagraph');
 
 function userProgress() { // 用來標色顯示使用者彈到的和弦
-  console.log('now index',paraIndex);
+  console.log('now index', paraIndex);
 
   // 使用的參數是全域的 paragraph, 即是當前頁面上所顯示的樂譜段落
   // 使用全域的變數 paraIndex 來控制標色的進度
@@ -37,6 +38,7 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
       paraIndex += 1
     }
   }
+  soundData.length = 0;
   if (paraIndex == paragraph.length) {
     // 觸發事件
     // 該事件 resolve writeScore 裡的 await Promise
@@ -92,7 +94,7 @@ async function writeScore() {
         rs();
       });
     });
-    // await sleep(1000);
+    await sleep(1000);
     scoreDiv.html('');
   }
 }
@@ -101,7 +103,6 @@ var rafID = null;
 var tracks = null;
 var buflen = 4096;
 var buf = new Float32Array(buflen);
-// var freqBuf = new Float32Array(buflen);
 
 var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -167,7 +168,6 @@ function autoCorrelate(buf, sampleRate) {
     return sampleRate / best_offset;
   }
   return -1;
-  //	var best_frequency = sampleRate/best_offset;
 }
 
 window.addEventListener('gotEnoughSound', () => {
@@ -194,10 +194,10 @@ function getSoundData() {
       console.log(capo);
       soundData.push(noteStrings[(note - capo) % 12]);
     } else { // else length == 10
+      console.log(soundData);
       // 觸發事件
       // 觸發後要做的事 => userProgress
       window.dispatchEvent(gotEnoughSound);
-      console.log(soundData);
       // 洗掉陣列裡的內容
       soundData.length = 0;
     }
@@ -216,14 +216,12 @@ function myGetUserMedia() {
         console.log('start stream');
         // Create an AudioNode from the stream.
         mediaStreamSource = audioContext.createMediaStreamSource(stream);
-        // tracks = stream.getTracks();
+        tracks = stream.getTracks();
         // Connect it to the destination.
         analyser = audioContext.createAnalyser();
         analyser.fftSize = 4096;
         mediaStreamSource.connect(analyser);
-        if (isConnect) {
-          getSoundData();
-        }
+        getSoundData();
       })
       .catch(function (err) {
         alert(err);
@@ -241,10 +239,6 @@ function startLive() {
     // getUserMedia 之後似乎會 return 一個 stream
     // 呼叫 getUserMedia 的函數, callback 到 getStream 函數
     myGetUserMedia();
-    isConnect = true;
-  } else {
-    mediaStreamSource.connect(analyser);
-    isConnect = true;
   }
 }
 
@@ -277,16 +271,34 @@ function _init(score) {
   $('#infoBar').append('<div class="col-md-1"> Key: ' + score.key + '</div>');
   $('#infoBar').append('<div class="col-md-1"> Play: ' + score.play + '</div>');
   $('#infoBar').append('<div class="col-md-1"><button id="startBtn" class="btn btn-primary">START</div</div>');
+  $('#infoBar').append('<div class="col-md-1"><button id="stopBtn" class="btn btn-primary">STOP</div</div>');
   $('#u2Video').attr('src', 'https://www.youtube.com/embed/' + score.youtube);
   // 存入全域的 score 跟 allContent
   g_score = score;
   g_allContent = dataPreProcess(score);
   // 並把 START button 加上 onclick
   $('#startBtn').on('click', function () {
-    // onclick 裡面呼叫 startLive
-    // 啟動音訊串流
-    startLive();
-    // 寫譜
-    writeScore()
+    // 用來確定當前的譜的狀況
+    if (isStart) {
+    } else {
+      // onclick 裡面呼叫 startLive
+      // 啟動音訊串流
+      startLive();
+      // 寫譜
+      writeScore();
+      isStart = true;
+    }
   });
+  $('#stopBtn').on('click', function () {
+    mediaStreamSource.disconnect();
+    tracks.forEach(function (track) {
+      console.log('Stream Stopped');
+      track.stop();
+    });
+    isStart = false;
+    audioContext = null;
+    paraIndex = 0;
+    window.cancelAnimationFrame(rafID);
+    $('#scoreDiv').html('');
+  })
 }
