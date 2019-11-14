@@ -21,6 +21,7 @@ var Schema = mongoose.Schema;
 // });
 var scoreSchema = new Schema({
   tags: [],
+  youtube: String,
   name: String,
   author: String,
   key: String,
