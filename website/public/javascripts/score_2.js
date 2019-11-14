@@ -14,6 +14,7 @@ var g_allContent;
 var soundData = Array();
 var paragraph;
 var paraIndex = 0;
+var barIndex = 0;
 
 var sleep = (ms = 0) => {
   return new Promise(r => setTimeout(r, ms));
@@ -21,31 +22,87 @@ var sleep = (ms = 0) => {
 
 var finishParagraph = new Event('finishParagraph');
 
+// 檢查 sound 和和弦表是否相稱
+function checkChord(scoreChord) {
+  // 有 2 個音符合就給過
+  let chord = eval("chordTable." + scoreChord);
+  console.log("scoreChord == " + scoreChord)
+  console.log('目前在確認的和弦' + chord[0]);
+  // 先確定有根音
+  if (soundData.includes(chord[0])) {
+    for (let i = 1; i < chord.length; i++) {
+      if (soundData.includes(chord[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return false;
+}
+
+var g_oneBarChord;
+
 function userProgress() { // 用來標色顯示使用者彈到的和弦
   console.log('now index', paraIndex);
 
   // 使用的參數是全域的 paragraph, 即是當前頁面上所顯示的樂譜段落
   // 使用全域的變數 paraIndex 來控制標色的進度
   // if 有歌詞 則 和弦為 data[i][0] else data[i]
+
+  // !!!!!!!!!!!!!!!!!!!
+  // 一小節內有兩個以上和弦的處理
+  // !!!!!!!!!!!!!!!!!!!
+  let oneBarChord;
   if (Array.isArray(paragraph[0])) { // 有歌詞
     console.log('isArray');
-    // 每個和弦跟 全域的 soundData 做比對
-    // if 和弦 in soundData 
-    if (soundData.includes(paragraph[paraIndex][0].charAt(0))) {
-      // 標色
-      $('#' + paraIndex).addClass('played');
-      paraIndex += 1
+    // 一個小節內有兩個以上的和弦
+    if (paragraph[paraIndex][0].includes('_')) {
+      oneBarChord = paragraph[paraIndex][0].split('_');
+      g_oneBarChord = oneBarChord;
+      if (checkChord(oneBarChord[barIndex])) {
+        $('#' + paraIndex + '-' + barIndex).addClass('played');
+        barIndex += 1;
+      }
+      if (barIndex == oneBarChord.length) {
+        barIndex = 0;
+        paraIndex += 1;
+      }
+    } else {
+
+      // 每個和弦跟 全域的 soundData 做比對
+      // if 和弦 in soundData 
+      if (checkChord(paragraph[paraIndex][0])) {
+        // 標色
+        $('#' + paraIndex).addClass('played');
+        paraIndex += 1
+      }
     }
-  } else {
+  } else { // 沒有歌詞
     console.log('not Array');
-    if (soundData.includes(paragraph[paraIndex].charAt(0))) {
-      // 標色
-      $('#' + paraIndex).addClass('played');
-      paraIndex += 1
+    // 一個小節內有兩個以上的和弦
+    if (paragraph[paraIndex].includes('_')) {
+      oneBarChord = paragraph[paraIndex].split('_');
+      g_oneBarChord = oneBarChord;
+
+      if (checkChord(oneBarChord[barIndex])) {
+        $('#' + paraIndex + '-' + barIndex).addClass('played');
+        barIndex += 1;
+      }
+      if (barIndex == oneBarChord.length) {
+        barIndex = 0;
+        paraIndex += 1;
+      }
+    } else {
+
+      if (checkChord(paragraph[paraIndex])) {
+        // 標色
+        $('#' + paraIndex).addClass('played');
+        paraIndex += 1
+      }
     }
   }
   soundData.length = 0;
-  if (paraIndex == paragraph.length) {
+  if (paraIndex == 8 || paraIndex == paragraph.length) {
     // 觸發事件
     // 該事件 resolve writeScore 裡的 await Promise
     window.dispatchEvent(finishParagraph);
@@ -87,12 +144,29 @@ async function writeScore() {
       // 小節數小於 8 直接渲染和弦到頁面
       // 如果有歌詞就要分別渲染
       if (Array.isArray(g_allContent[i][bar])) {
-        // allContent[i][bar][0] is Chord
-        // allContent[i][bar][1] is Lyric
-        scoreDiv.append('<span id="' + bar + '">' + g_allContent[i][bar][0] + ' </span><br>');
+        // 檢查是否該小節內有兩個和弦
+        if (g_allContent[i][bar][0].includes('_')) {
+          oneBarChord = g_allContent[i][bar][0].split('_');
+          for (let each = 0; each < oneBarChord.length; each++) {
+            scoreDiv.append('<span id="' + bar + '-' + each + '">' + oneBarChord[each] + ' &nbsp;</span>')
+          }
+          scoreDiv.append('<br>');
+        } else {
+          // allContent[i][bar][0] is Chord
+          // allContent[i][bar][1] is Lyric
+          scoreDiv.append('<span id="' + bar + '">' + g_allContent[i][bar][0] + ' </span><br>');
+        }
         scoreDiv.append('<span>' + g_allContent[i][bar][1] + ' </span><br>');
       } else { // 沒有歌詞就直接渲染
-        scoreDiv.append('<span id="' + bar + '">' + g_allContent[i][bar] + ' </span>');
+        if (g_allContent[i][bar].includes('_')) {
+          oneBarChord = g_allContent[i][bar].split('_');
+          for (let each = 0; each < oneBarChord.length; each++) {
+            scoreDiv.append('<span id="' + bar + '-' + each + '">' + oneBarChord[each] + ' &nbsp;</span>')
+          }
+          scoreDiv.append('<br>');
+        } else {
+          scoreDiv.append('<span id="' + bar + '">' + g_allContent[i][bar] + ' </span><br>');
+        }
       }
     }
     // 不管有沒有超過 8 小節 進入下一個段落前都要 await 和弦分析
@@ -138,7 +212,7 @@ function autoCorrelate(buf, sampleRate) {
   }
   rms = Math.sqrt(rms / SIZE);
   // console.log('rms:', rms);
-  if (rms < 0.08) // not enough signal
+  if (rms < 0.02) // not enough signal
     return -1;
 
   var lastCorrelation = 1;
@@ -157,15 +231,6 @@ function autoCorrelate(buf, sampleRate) {
         best_offset = offset;
       }
     } else if (foundGoodCorrelation) {
-      // short-circuit - we found a good correlation, then a bad one, so we'd just be seeing copies from here.
-      // Now we need to tweak the offset - by interpolating between the values to the left and right of the
-      // best offset, and shifting it a bit.  This is complex, and HACKY in this code (happy to take PRs!) -
-      // we need to do a curve fit on correlations[] around best_offset in order to better determine precise
-      // (anti-aliased) offset.
-
-      // we know best_offset >=1, 
-      // since foundGoodCorrelation cannot go to true until the second pass (offset=1), and 
-      // we can't drop into this clause until the following pass (else if).
       var shift = (correlations[best_offset + 1] - correlations[best_offset - 1]) / correlations[best_offset];
       return sampleRate / (best_offset + (8 * shift));
     }
@@ -195,11 +260,10 @@ function getSoundData() {
   } else {
     // 呼叫函數把頻率轉成音階
     var note = noteFromPitch(freq);
-    if (soundData.length < 10) {
+    if (soundData.length < 50) {
       // soundData.push(note) till length == 10
       // 減掉 capo 的數字來處理調性問題
       let capo = parseInt(g_score.capo);
-      console.log(capo);
       soundData.push(noteStrings[(note - capo) % 12]);
     } else { // else length == 10
       console.log(soundData);
@@ -281,6 +345,7 @@ function stop() {
   isStart = false;
   audioContext = null;
   paraIndex = 0;
+  barIndex = 0;
   window.cancelAnimationFrame(rafID);
   $('#scoreDiv').html('');
 }
