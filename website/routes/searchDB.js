@@ -65,9 +65,6 @@ var scoreSchema = new Schema({
 }, { strict: false });
 var scoreModel = mongoose.model('scoreDB', scoreSchema);
 
-
-
-
 var preLoadScoreInfo;
 // 預先載入資料庫中樂譜的基本資訊(id 和 tags) 用以搜尋
 scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
@@ -78,10 +75,7 @@ scoreModel.find({}, { tags: 1, name: 1, author: 1 }, function (err, docs) {
 
 // 搜尋樂曲
 router.get('/search_result', function (req, res, next) {
-  console.log('This is preLoadScoreInfo====================>', preLoadScoreInfo);
-  console.log(req.query);
   let formData = req.query['search'];
-  console.log('formData:===================', formData);
 
   // 用 formData 對 preLoad 做搜尋
   // 列出所有符合 formData 的 tags 的項目 的 id 還有 name
@@ -98,7 +92,21 @@ router.get('/search_result', function (req, res, next) {
       }
     }
   }
-  console.log(findResult);
+  // 把結果依照作者排序同樣作者依照歌名
+  findResult.sort(function (a, b) {
+    if (a.author < b.author) {
+      return -1;
+    } else if (a.author > b.author) {
+      return 1;
+    } else {
+      if(a.name < b.name) {
+        return -1;
+      } else if(a.name < b.name) {
+        return 1;
+      }
+    }
+    return 0;
+  });
   console.log("Count of result ==> ", count);
   if (count == 0) {
     let msg = `
@@ -116,12 +124,9 @@ router.get('/search_result', function (req, res, next) {
 router.get('/score', function (req, res, next) {
 
   let formData = req.query['scoreId'];
-  console.log("這是新的 formData", formData);
-
   let score;
   scoreModel.find({ _id: formData }, { _id: 0 }, function (err, docs) {
     if (err) console.log(err);
-    console.log('查詢結果：', docs);
     // 把搜尋出來的資料作整理
     score = docs[0];
     console.log(score.name);
@@ -131,12 +136,6 @@ router.get('/score', function (req, res, next) {
 
 router.post('/InsertScore', function (req, res, next) {
   let formData = JSON.parse(req.body['score']);
-  // console.log('=============>',(formData));
-  console.log('=============>', typeof (formData));
-  // var doc = ({
-  //   "tags": '林俊傑',
-  //   "name": '修煉愛情'
-  // });
 
   // 新增資料到資料庫
   scoreModel.create(formData, function (err, docs) {
