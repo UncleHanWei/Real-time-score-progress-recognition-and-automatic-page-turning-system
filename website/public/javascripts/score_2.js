@@ -1,6 +1,3 @@
-// 用 bpm 來計算，當標色完一個和弦的時候， await 3 拍或 1 拍(取決於一個小節內的和弦數量)
-
-// 可能是處裡不同瀏覽器的支援狀況
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 // 宣告全域的變數
 var audioContext = null; // 用來建立音訊事件的物件
@@ -32,6 +29,7 @@ function checkChord(scoreChord) {
   if (soundData.includes(chord[0])) {
     for (let i = 1; i < chord.length; i++) {
       if (soundData.includes(chord[i])) {
+        detectionSleep();
         return true;
       }
     }
@@ -40,7 +38,13 @@ function checkChord(scoreChord) {
   return false;
 }
 
-var g_oneBarChord;
+async function detectionSleep() {
+  mediaStreamSource.disconnect();
+  console.log('analyser paused');
+  soundData.length = 0;
+  await sleep(500);
+  mediaStreamSource.connect(analyser);
+}
 
 function userProgress() { // 用來標色顯示使用者彈到的和弦
   console.log('now index', paraIndex);
@@ -49,16 +53,12 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
   // 使用全域的變數 paraIndex 來控制標色的進度
   // if 有歌詞 則 和弦為 data[i][0] else data[i]
 
-  // !!!!!!!!!!!!!!!!!!!
-  // 一小節內有兩個以上和弦的處理
-  // !!!!!!!!!!!!!!!!!!!
   let oneBarChord;
   if (Array.isArray(paragraph[0])) { // 有歌詞
     console.log('isArray');
     // 一個小節內有兩個以上的和弦
     if (paragraph[paraIndex][0].includes('_')) {
       oneBarChord = paragraph[paraIndex][0].split('_');
-      g_oneBarChord = oneBarChord;
       if (checkChord(oneBarChord[barIndex])) {
         $('#' + paraIndex + '-' + barIndex).addClass('played');
         barIndex += 1;
@@ -68,7 +68,6 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
         paraIndex += 1;
       }
     } else {
-
       // 每個和弦跟 全域的 soundData 做比對
       // if 和弦 in soundData 
       if (checkChord(paragraph[paraIndex][0])) {
@@ -82,7 +81,6 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
     // 一個小節內有兩個以上的和弦
     if (paragraph[paraIndex].includes('_')) {
       oneBarChord = paragraph[paraIndex].split('_');
-      g_oneBarChord = oneBarChord;
 
       if (checkChord(oneBarChord[barIndex])) {
         $('#' + paraIndex + '-' + barIndex).addClass('played');
@@ -93,7 +91,6 @@ function userProgress() { // 用來標色顯示使用者彈到的和弦
         paraIndex += 1;
       }
     } else {
-
       if (checkChord(paragraph[paraIndex])) {
         // 標色
         $('#' + paraIndex).addClass('played');
@@ -134,7 +131,6 @@ async function writeScore() {
             rs();
           });
         });
-        // await sleep(1000);
         paragraph = g_allContent[i];
         paraIndex = 8;
         soundData.length = 0;
@@ -175,7 +171,7 @@ async function writeScore() {
         rs();
       });
     });
-    await sleep(1000);
+    await sleep(300);
     scoreDiv.html('');
   }
   stop();
@@ -305,8 +301,7 @@ function myGetUserMedia() {
 
 function startLive() {
   if (audioContext == null) {
-    // audioContext = new AudioContext();
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    audioContext = new AudioContext();
     // 需要取得使用者的麥克風進行音訊串流
     // getUserMedia 之後似乎會 return 一個 stream
     // 呼叫 getUserMedia 的函數, callback 到 getStream 函數
