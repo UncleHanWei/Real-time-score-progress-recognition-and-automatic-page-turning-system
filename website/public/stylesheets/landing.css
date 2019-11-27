@@ -1,0 +1,52 @@
+body {
+    background: url('/images/landingBG.JPG');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: #4D1F00;
+}
+
+.container {
+    font-family: Lato;
+}
+
+html {
+    height: 100%;
+}
+
+#content {
+    text-align: center;
+    padding-top: 16%;
+    text-shadow: 0px 4px 3px rgba(0, 0, 0, 0.4),
+                 0px 8px 13px rgba(0, 0, 0, 0.1),
+                 0px 18px 23px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 5em;
+}
+
+hr {
+    width: 400px;
+    border-top: 1px solid #f8f8f8;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+}
+
+
+.btn-outline-brown {
+    color: #4D1F00;
+    border-color: #4D1F00;
+}
+
+.btn-outline-brown:focus {
+    box-shadow: 0 0 2px 2px #4D1F00;
+ }
+
+.btn-outline-brown:hover {
+    background-color: #4D1F00;
+    color: #f8f8f8;
+    box-shadow: #4D1F00 !important;
+}

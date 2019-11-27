@@ -112,7 +112,7 @@ router.get('/search_result', function (req, res, next) {
     let msg = `
     <div class="row m-5">
       <div class="col-md-12">
-        <h4 id="msg" class="text-center"><a class="text-dark" href="/">查無結果，點此返回首頁</a></h4>
+        <h4 id="msg" class="text-center"><a class="text-dark" href="/home">查無結果，點此返回首頁</a></h4>
       </div>
     </div>`
     res.render('search_result', { title: '搜尋結果', result: '', noResult: msg });
