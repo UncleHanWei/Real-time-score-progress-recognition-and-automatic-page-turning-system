@@ -348,11 +348,11 @@ function stop() {
 // 建立 init 函數
 function _init(score) {
   // 用來印出樂譜的幾個基本資料
-  $('#infoBar').append('<div class="col-md-1"> Capo: ' + score.capo + '</div>');
-  $('#infoBar').append('<div class="col-md-1"> Key: ' + score.key + '</div>');
-  $('#infoBar').append('<div class="col-md-1"> Play: ' + score.play + '</div>');
-  $('#infoBar').append('<div class="col-md-1"><button id="startBtn" class="btn btn-primary">START</div</div>');
-  $('#infoBar').append('<div class="col-md-1"><button id="stopBtn" class="btn btn-primary">STOP</div</div>');
+  $('#infoBar').append('<div class="col-md-1 m-1 align-self-center"> Capo: ' + score.capo + '</div>');
+  $('#infoBar').append('<div class="col-md-1 m-1 align-self-center"> Key: ' + score.key + '</div>');
+  $('#infoBar').append('<div class="col-md-1 m-1 align-self-center"> Play: ' + score.play + '</div>');
+  $('#infoBar').append('<div class="col-md-2 m-1"><button id="startBtn" class="btn btn-primary">START</div</div>');
+  $('#infoBar').append('<div class="col-md-2 m-1"><button id="stopBtn" class="btn btn-primary">STOP</div</div>');
   $('#u2Video').attr('src', 'https://www.youtube.com/embed/' + score.youtube);
   // 存入全域的 score 跟 allContent
   g_score = score;
