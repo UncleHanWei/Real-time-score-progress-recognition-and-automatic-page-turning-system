@@ -3,7 +3,6 @@ body {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-
     color: #4D1F00;
 }
 
@@ -30,11 +29,10 @@ h1 {
 }
 
 hr {
-    width: 400px;
+    width: 50%;
     border-top: 1px solid #f8f8f8;
     border-bottom: 1px solid rgba(0,0,0,0.2);
 }
-
 
 .btn-outline-brown {
     color: #4D1F00;
