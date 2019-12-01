@@ -1,3 +1,13 @@
+html {
+    height: 100%;
+}
+body {
+    background-image: url('/images/landingBG.JPG');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 #infoBar button {
     width: 100%;
 }

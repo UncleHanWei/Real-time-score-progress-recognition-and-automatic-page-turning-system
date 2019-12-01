@@ -1,83 +1,42 @@
-.carousel {
-    margin-bottom: 4rem;
-}
-.carousel-item {
-    height: 30rem;
-}
-#team{
-    position: relative;
-    right: -25%;
-}
-h4{
-    font-family: Microsoft JhengHei;
-    padding-top: 30px;
-}
-.row {
-    width: 75%;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto; 
-}
-#t1{
-    background-image: url("../images/1.jpg");
-    background-repeat:no-repeat;
-    background-position:0px -15px;
-    width:160px;
-    height:130px;
-    opacity:0.8;
-    margin-right: 3%
-}
-#t2{
-    background-image: url("../images/2.jpg");
-    background-position:-25px -15px;
-    width:160px;
-    height:130px;
-    opacity:0.8;
-    margin-right: 3%
-}
-#t3{
-    background-image: url("../images/3.jpg");
-    background-repeat:no-repeat;
-    background-position:-29px -49px;
-    width:160px;
-    height:130px;
-    opacity:0.8;
-    margin-right: 3%
-}
-#t4{
-    background-image: url("../images/4.jpg");
-    background-repeat:no-repeat;
-    background-position:-15px -15px;
-    width:160px;
-    height:130px;
-    opacity:0.8;
-    margin-right: 3%
-}
-#t5{
-    background-image: url("../images/5.png");
-    background-repeat:no-repeat;
-    background-position:-35px -45px;
-    width:160px;
-    height:130px;
-    opacity:0.8;
-    margin-right: 3%
-}
-.musicrow {
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-}
-  
-.month .prev {
-    float: left;
-    padding-top: 0px;
-    margin-top: -18%;
-    margin-left: -15%
+#homeview {
+    background-image: url('/images/homeview.JPG');
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    height: 40vh;
+    font-family: 'Bowlby One SC', '微軟正黑體' ;
+    font-weight: bolder;
 }
 
-.month .next {
-    float: right;
-    padding-top: 0px;
-    margin-top: -18%;
-    margin-right: -15%
+#line {
+    border: 0;
+    height: 3px;
+    width: 30%;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+h4 {
+    font-family: 'Bowlby One SC', cursive;
+    text-align: center;
+}
+
+hr.onestyle {
+    border: 0;
+    height: 2px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+#category {
+    font-size: 24px;
+    font-family: 'Noto Sans TC', sans-serif;
+}
+
+form {
+    display: inline-block;
+}
+
+#pages {
+    font-family: 'Bebas Neue', cursive;
 }

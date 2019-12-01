@@ -9,100 +9,75 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/carousel/">
-  <link href="../stylesheets/index.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Noto+Sans+TC|Bebas+Neue&display=swap" rel="stylesheet">
+  <!-- <link href="https://fonts.googleapis.com/css?family=&display=swap" rel="stylesheet"> -->
+  <link href="/stylesheets/index.css" rel="stylesheet">
 </head>
 
 <body>
   <% include ./navHeader.ejs %>
-
-  <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-      <li data-target="#myCarousel" data-slide-to="1"></li>
-      <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <svg class="bd-placeholder-img" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
-          focusable="false" role="img">
-          <rect width="100%" height="100%" fill="#777" /></svg>
-        <div class="container">
-          <div class="carousel-caption text-left">
-            <img src="../images/index_navbar.JPG" class="d-block w-50" id="team">
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
-          focusable="false" role="img">
-          <rect width="100%" height="100%" fill="#777" /></svg>
-        <div class="container">
-          <div class="carousel-caption">
-            <img src="../images/index_navbar.JPG" class="d-block w-50" id="team">
-          </div>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <svg class="bd-placeholder-img" width="100%" height="100%" preserveAspectRatio="xMidYMid slice"
-          focusable="false" role="img">
-          <rect width="100%" height="100%" fill="#777" /></svg>
-        <div class="container">
-          <div class="carousel-caption text-right">
-            <img src="../images/index_navbar.JPG" class="d-block w-50" id="team">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12" id="homeview">
+        <div class="row mt-5"></div>
+        <div class="row mt-5">
+          <div class="col-md-8">
+            <h1 class="text-center font-weight-bolder">AMAZ PU</h1>
+            <hr id="line">
+            <h3 class="text-center">
+              <span class="font-weight-bold">吉</span>日起 &nbsp; 聲聲<span class="font-weight-bold"> Pu </span>息</h3>
           </div>
         </div>
       </div>
     </div>
-    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
-  <div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-2">
-      <a href="/InsertScore">TO INSERT SCORE</a><br>
+
+
+
+    <div class="row">
+      <div class="col-md-12 ">
+        <hr class="onestyle">
+        <h4>CATEGORY</h4>
+        <hr class="onestyle">
+      </div>
     </div>
-    <div class="col-md-2">
-      <a href="/chordDetecter">TO Chord Detecter</a><br>
+
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <form action="/searchDB/search_result" method="GET" id="category">
+          <input type="text" class="d-none" name="search" id="input">
+          <input type="button" class="btn btn-info btn-lg" value="西洋" onclick="goSearch(value)">
+          <input type="button" class="btn btn-info btn-lg" value="華語" onclick="goSearch(value)">
+          <input type="button" class="btn btn-info btn-lg" value="日語" onclick="goSearch(value)">
+          <input type="button" class="btn btn-info btn-lg" value="流行" onclick="goSearch(value)">
+          <input type="button" class="btn btn-info btn-lg" value="搖滾" onclick="goSearch(value)">
+        </form>
+      </div>
     </div>
-    <div class="col-md-2">
-      <a href="/pitchDetecter">TO Pitch Detecter</a>
+
+    <div class="col-md-12 p-0">
+      <hr class="onestyle">
+      <h4>Pages</h4>
+      <hr class="onestyle">
     </div>
+
+    <div class="row">
+      <div class="col-md-12 text-center" id="pages">
+        <form action="/searchDB/all" method="GET" id="getAll">
+          <button type="button" class="btn btn-secondary btn-lg" onclick="getAll()">all score</button>
+        </form>
+        <button class="btn btn-secondary btn-lg align-middle" onclick="a()">about</button>
+        <button class="btn btn-secondary btn-lg" onclick="a()">contact</button>
+
+      </div>
+    </div>
+
   </div>
 
-  <div class="col-xs-12 col-sm-6 col-md-8">
-    <h4>分類</h4>
-  </div>
-  <div class="row" id="musicrow">
-    <div class="col-sm-12 text-center">
-      <form action="/searchDB/search_result" method="GET" id="category">
-        <input type="text" class="d-none" name="search" id="input">
-        <input type="button" class="btn btn-outline-primary" value="華語" onclick="goSearch(value)">
-        <input type="button" class="btn btn-outline-primary" value="英文" onclick="goSearch(value)">
-        <input type="button" class="btn btn-outline-primary" value="搖滾" onclick="goSearch(value)">
-      </form>
+  <footer class="bg-dark text-light mt-5">
+    <div class="text-center py-1">
+      國立暨南國際大學 網站製作小組: AmazPu
     </div>
-  </div>
-
-  </br>
-
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"> <a class="page-link" href="#">Next</a></li>
-    </ul>
-  </nav>
-
+  </footer>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
     integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
@@ -110,7 +85,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
-    <script src="/javascripts/index.js"></script>
+  <script src="/javascripts/index.js"></script>
 </body>
 
 </html>

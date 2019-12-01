@@ -111,12 +111,34 @@ router.get('/search_result', function (req, res, next) {
   if (count == 0) {
     let msg = `
     <div class="row m-5">
-      <div class="col-md-12">
-        <h4 id="msg" class="text-center"><a class="text-dark" href="/home">查無結果，點此返回首頁</a></h4>
+      <div class="col-md-12 alert alert-danger ">
+        <h4 id="msg" class="text-center m-auto"><a class="text-dark" href="/home">查無結果，點此返回首頁</a></h4>
       </div>
     </div>`
     res.render('search_result', { title: '搜尋結果', result: '', noResult: msg });
   }
+  res.render('search_result', { title: '搜尋結果', result: findResult, noResult: '' });
+});
+
+// 全部樂曲
+router.get('/all', function (req, res, next) {
+  let findResult = preLoadScoreInfo;
+  // 把結果依照作者排序同樣作者依照歌名
+  findResult.sort(function (a, b) {
+    if (a.author < b.author) {
+      return -1;
+    } else if (a.author > b.author) {
+      return 1;
+    } else {
+      if(a.name < b.name) {
+        return -1;
+      } else if(a.name < b.name) {
+        return 1;
+      }
+    }
+    return 0;
+  });
+
   res.render('search_result', { title: '搜尋結果', result: findResult, noResult: '' });
 });
 
