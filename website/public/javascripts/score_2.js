@@ -314,7 +314,7 @@ function dataPreProcess(score) {
   var allContent = Array();
   for (let i = 0; i < score.progress.length; i++) {
     // 檢查該段落是否有歌詞和和弦
-    if (Object.keys(eval('score.' + score.progress[i])).length == 2) {
+    if (Object.keys(eval('score.' + score.progress[i])).includes('chord')) {
       // 建立用來存放 chord 跟 lyric 的陣列(一共 2 格)
       let cNL = Array();
       for (let bar = 0; bar < eval('score.' + score.progress[i] + '.chord').length; bar++) {
