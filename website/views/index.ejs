@@ -9,7 +9,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="canonical" href="https://getbootstrap.com/docs/4.3/examples/carousel/">
-  <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Noto+Sans+TC|Bebas+Neue&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Bowlby+One+SC|Noto+Sans+TC|Bebas+Neue&display=swap"
+    rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css?family=&display=swap" rel="stylesheet"> -->
   <link href="/stylesheets/index.css" rel="stylesheet">
 </head>
@@ -30,8 +31,6 @@
         </div>
       </div>
     </div>
-
-
 
     <div class="row">
       <div class="col-md-12 ">
@@ -65,12 +64,58 @@
         <form action="/searchDB/all" method="GET" id="getAll">
           <button type="button" class="btn btn-secondary btn-lg" onclick="getAll()">all score</button>
         </form>
-        <button class="btn btn-secondary btn-lg align-middle" onclick="a()">about</button>
-        <button class="btn btn-secondary btn-lg" onclick="a()">contact</button>
-
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal" data-target="#about">About</button>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary btn-lg" data-toggle="modal"
+          data-target="#contact">Contact</button>
       </div>
     </div>
 
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">About</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="about-body">
+          本系統希望提供喜歡彈奏吉他的大家一個平台<br>
+          實現進度標示、自動翻頁及跨平台使用等功能<br>
+          現在就讓我們用音樂交個朋友吧!
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Contact</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <a href="https://github.com/UncleHanWei/Real-time-score-progress-recognition-and-automatic-page-turning-system"
+            target="_blank">Github Repo</a>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <footer class="bg-dark text-light mt-5">
