@@ -114,6 +114,7 @@ async function writeScore() {
   // allContent[i] : 每個段落(Ex: Intro, verse...etc)
   // allContent[i][bar] : 每個段落裡的各小節
   for (let i = 0; i < g_allContent.length; i++) {
+    let every8BarCounter = 0;
     scoreDiv.append('<h4>' + g_score.progress[i] + '</h4>');
     // 渲染頁面, 一次吐 8 小節, 如果吐到 8 小節就先 await 和弦判斷
     // 等到和弦判斷使用者已經彈到第 8 小節, 再重新渲染下一個部分
@@ -123,6 +124,7 @@ async function writeScore() {
     paragraph = g_allContent[i];
     for (let bar = 0; bar < g_allContent[i].length; bar++) {
       if (bar != 0 && bar % 8 == 0) { // 小節數超過 8
+        every8BarCounter += 1;
 
         // Promise 裡面綁定一個事件，用這裡面的事件觸發 resolve(?
         // 綁定的事件是 "userProgress 完成一次段落"
@@ -132,7 +134,7 @@ async function writeScore() {
           });
         });
         paragraph = g_allContent[i];
-        paraIndex = 8;
+        paraIndex = 8 * every8BarCounter;
         soundData.length = 0;
         scoreDiv.html('');
         scoreDiv.append('<h4>' + g_score.progress[i] + '</h4>');
